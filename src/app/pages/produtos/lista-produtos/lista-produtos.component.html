@@ -1,0 +1,113 @@
+<form>
+    <div class="form-group form-inline d-flex flex-row-reverse mt-3">
+        <button (click)="abrirModalProduto(modalProduto)" title="Cadastrar novo produto" type="button"
+            class="btn btn-success p-2 m-2">
+            <i class="fa fa-plus">
+                Novo Produto
+            </i>
+        </button>
+    </div>
+</form>
+<ngb-toast *ngIf="showToastSucesso" class="btn-success toast-success-color-background" [autohide]="true" [delay]="7000">
+    {{mensagemRetorno}}
+</ngb-toast>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Descrição</th>
+            <th scope="col">Preço</th>
+            <th class="text-right" scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let produto of produtos;">
+            <td>
+                <ngb-highlight [result]="produto.name | titlecase"></ngb-highlight>
+            </td>
+            <td>
+                <ngb-highlight [result]="produto.price | currency:'BRL':true:'1.2-2':'pt'">
+                </ngb-highlight>
+            </td>
+            <td class="float-right">
+                <button title="Editar" (click)="editarProduto(modalProduto, produto)"
+                    class="btn btn-success btn-sm mr-1">
+                    <i class="fa fa-edit"></i>
+                </button>
+                <button title="Excluir"
+                    (click)="openModalConfirmarExclusaoProduto(modalConfirmarExclusaoProduto); objProduto = produto"
+                    class="btn btn-danger btn-sm">
+                    <i class="fa fa-times"></i>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+
+    <!-- Modal de produto -->
+    <ng-template #modalProduto let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">{{tituloAcao}} Produto</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="produtoForm" class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img [src]="imageProduto" class="rounded image-produto mx-auto d-block">
+                    </div>
+                    <div class="col-md-6 d-flex flex-column justify-content-center">
+                        <div class="input-group mb-3">
+                            <ngb-toast *ngIf="showToastErro" class="btn-danger toast-error-color-background"
+                                [autohide]="true" [delay]="6000">
+                                {{mensagemRetorno}}
+                            </ngb-toast>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Nome</span>
+                            </div>
+                            <input formControlName="name" type="text" class="form-control" aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Preço</span>
+                            </div>
+                            <input currencyMask formControlName="price" class="form-control"
+                                [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">URL imagem</span>
+                            </div>
+                            <input formControlName="imagePath" type="text" class="form-control" aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer d-flex">
+            <button type="button" (click)="cancelar()" class="btn btn-danger flex-row-reverse">Cancelar</button>
+            <button type="button" (click)="salvar()" class="btn btn-success">Salvar</button>
+        </div>
+    </ng-template>
+
+    <!-- Modal confirmar exclusão do produto -->
+    <ng-template #modalConfirmarExclusaoProduto let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Excluir Produto</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Tem certeza que deseja excluir este produto?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary float-left"
+                (click)="modal.close('Close click')">Cancelar</button>
+            <button type="button" class="btn btn-danger" (click)="excluir(objProduto)">Sim</button>
+        </div>
+    </ng-template>
+</table>

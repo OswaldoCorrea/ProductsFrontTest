@@ -1,0 +1,17 @@
+.navbar-dark {
+    background-color:#0067E7;
+    box-shadow: 4px 1px 2px 0px rgba(50, 50, 50, 0.41);
+  }
+
+
+  #logoPrincipal {
+    width: 120px;
+  }
+
+  #btnSair {
+    width: 120px;
+  }
+
+  .navbar-dark .navbar-nav .nav-link {
+    color:white;
+}

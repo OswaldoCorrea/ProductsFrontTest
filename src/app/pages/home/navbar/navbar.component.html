@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top ">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarNavDropdown" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand">
+      <img id="logoPrincipal" src="/assets/sitemercado.png">
+    </a>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <ul class="navbar-nav navbar-right">
+        <li class="nav-item">
+          <button (click)="logout()" placement="bottom" class="btn text-white" 
+          ngbTooltip="Sair" 
+          style="cursor: pointer;" type="button" title="Sair">
+            <i class="fa fa-power-off"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+</nav>
