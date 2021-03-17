@@ -9,14 +9,22 @@ import { AutenticacaoService } from '../services/autenticacao.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginForm!: FormGroup;
-  logo: String = 'logo.png';
-  showToastErro: boolean = false;
-  mensagemErro: String = '';
+  
   constructor(
     private autenticacaoService: AutenticacaoService,
     private formBuilder: FormBuilder,
-    private rota: Router) {
+    private rota: Router) { }
+    
+  loginForm!: FormGroup;
+  logo = 'logo.png';
+  showToastErro = false;
+  mensagemErro = '';
+
+  ngOnInit(): void {
+    this.criarForm();
+  }
+
+  criarForm(): void {
     this.loginForm = this.formBuilder.group({
       username: ['',
         Validators.compose([
@@ -31,27 +39,21 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    if (this.autenticacaoService.verificarUsuarioLogado()) {
-      this.rota.navigate(['home']);
-    }
-  }
-
-  submit(){
+  submit(): void {
     let username: string = this.loginForm.get('username')?.value;
     let password: string = this.loginForm.get('password')?.value;
-    this.autenticacaoService.login(username,password).subscribe((data:any) => {
+    this.autenticacaoService.login(username, password).subscribe((data: any) => {
       if (data.success) {
         this.showToastErro = false;
         localStorage.setItem('usuarioLogado', 'true');
-        this.rota.navigate(['home']);  
+        this.rota.navigate(['home']);
       } else {
         this.showToastErro = true;
         this.mensagemErro = data.error;
       }
     }, (err) => {
-        this.showToastErro = true;
-        this.mensagemErro = err;
+      this.showToastErro = true;
+      this.mensagemErro = err;
     });
   }
 }

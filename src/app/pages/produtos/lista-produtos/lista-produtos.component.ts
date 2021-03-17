@@ -14,19 +14,23 @@ export class ListaProdutosComponent implements OnInit {
   closeResult = '';
   produtos!: Produto[];
   produtoForm!: FormGroup;
-  showToastErro: boolean = false;
-  showToastSucesso: boolean = false;
-  mensagemRetorno: string = '';
-  tituloAcao: string = 'Novo';
-  imageProduto: string = '../../../../assets/semImagemCadastrada.png';
-  isEdicao: boolean = false;
+  showToastErro = false;
+  showToastSucesso = false;
+  mensagemRetorno = '';
+  tituloAcao = 'Novo';
+  imageProduto = '../../../../assets/semImagemCadastrada.png';
+  isEdicao = false;
   objProduto!: Produto;
 
-  constructor(
-    private modalService: NgbModal,
-    private produtoService: ProdutoService,
-    private formBuilder: FormBuilder
-  ) {
+  constructor(private modalService: NgbModal,private produtoService: ProdutoService,
+    private formBuilder: FormBuilder) {}
+  
+  ngOnInit(): void {
+    this.carregarProdutos();
+    this.criarForm();
+  }
+
+  criarForm(): void{
     this.produtoForm = this.formBuilder.group({
       name: ['',
         Validators.compose([
@@ -41,23 +45,28 @@ export class ListaProdutosComponent implements OnInit {
       id: []
     });
   }
-  ngOnInit(): void {
+
+  carregarProdutos(): void{
     this.produtoService.listar().subscribe(produtos => { this.produtos = produtos });
   }
+
   removerProdutoLista(produto: Produto) {
     const index = this.produtos.indexOf(produto);
     if (index != -1) {
       this.produtos.splice(index, 1);
     }
   }
+
   atualizarProdutoLista(index: number, produto: Produto) {
     if (index != -1) {
       this.produtos[index] = produto;
     }
   }
+
   adicionarProdutoLista(produto: Produto) {
     this.produtos.push(produto);
   }
+
   excluir(produto: Produto) {
     this.produtoService.excluir(produto.id).subscribe((data: any) => {
       if (data.success) {
@@ -77,13 +86,16 @@ export class ListaProdutosComponent implements OnInit {
       this.mensagemRetorno = err;
     });
   }
+
   salvar() {
     this.isEdicao ? this.atualizar() : this.criar();
   }
+
   cancelar() {
     this.produtoForm.reset();
     this.modalService.dismissAll();
   }
+
   atualizar() {
     const index = this.produtos.findIndex(x => x.id === this.produtoForm.get('id')?.value);
     this.produtoService.atualizar(this.produtoForm.value).subscribe((data: any) => {
@@ -104,6 +116,7 @@ export class ListaProdutosComponent implements OnInit {
       this.mensagemRetorno = err;
     });
   }
+
   criar() {
     this.produtoService.criar(this.produtoForm.value).subscribe((data: any) => {
       if (data.success) {
@@ -123,6 +136,7 @@ export class ListaProdutosComponent implements OnInit {
       this.mensagemRetorno = err;
     });
   }
+
   editarProduto(modalProduto: any, produto: Produto) {
     this.abrirModalProduto(modalProduto);
     this.isEdicao = true;
@@ -146,7 +160,7 @@ export class ListaProdutosComponent implements OnInit {
     });
   }
 
-  openModalConfirmarExclusaoProduto(modalConfirmarExclusaoProduto: any) {
+  abrirModalConfirmarExclusaoProduto(modalConfirmarExclusaoProduto: any) {
     this.modalService.open(modalConfirmarExclusaoProduto, { size: 'sm' });
   }
 

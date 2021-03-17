@@ -9,18 +9,21 @@ import { environment } from 'src/environments/environment';
 })
 export class ProdutoService {
   constructor(private http: HttpClient) { }
-  urlProdutos = '/products';
+  private readonly urlProdutos = '/products';
+
   listar(): Observable<Produto[]> {
     return this.http.get<Produto[]>(`${environment.API_BASE_URL}${this.urlProdutos}`);
   }
-  criar(data:Produto){
-    console.log("maoooe");
+
+  criar(data:Produto): Observable<Produto[]>{
     return this.http.post<Produto[]>(`${environment.API_BASE_URL}${this.urlProdutos}`, data);
   }
-  atualizar(data:Produto){
+
+  atualizar(data:Produto): Observable<Produto[]>{
     return this.http.put<Produto[]>(`${environment.API_BASE_URL}${this.urlProdutos}`, data);
   }
-  excluir(id:string){
+
+  excluir(id:string): Observable<Produto[]>{
     return this.http.delete<Produto[]>(`${environment.API_BASE_URL}${this.urlProdutos}/${id}`);
   }
 }

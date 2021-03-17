@@ -20,6 +20,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NgxCurrencyModule } from 'ngx-currency';
 import { HttpClientModule } from '@angular/common/http';
 import { NgBootstrapFormValidationModule } from 'ng-bootstrap-form-validation';
+import { AuthGuardGuard } from './pages/autenticacao/services/auth-guard.guard';
 
 
 @NgModule({
@@ -46,8 +47,8 @@ import { NgBootstrapFormValidationModule } from 'ng-bootstrap-form-validation';
     [RouterModule.forRoot(rootRouterConfig, {useHash:false})]
   ],
   providers: [{
-    provide: APP_BASE_HREF, useValue: '/'
-  }],
+    provide: APP_BASE_HREF, useValue: '/'}, 
+    AuthGuardGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
